@@ -1,0 +1,138 @@
+#!/bin/bash
+# 
+#   STSI's mt-DNA Pipeline Bash script.
+#   This pipeline works at the the sample level, for cohorts you will 
+#   need to excute "mtdna_cohort.sh". This way, if a new relatives comes, 
+#   you cand easily add it ia posteriori.
+#
+#   Last Modified; Aug/08/2016
+#
+#   Version: 1.0.5
+#
+#   2016 Manuel Rueda (mrueda@scripps.edu)
+#
+#   This program is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation; either version 3 of the License, or
+#   (at your option) any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public License
+#   along with this program; if not, see <https://www.gnu.org/licenses/>.
+#
+#   If this program helps you in your research, please cite.
+
+set -eu
+
+function usage {
+
+    USAGE="""
+    Usage: $0 -n n_cpu
+
+    NB1: The script is expecting that you follow STSI nomenclature for samples
+
+MA00047_exome
+└── MA0004701P_ex  <--- ID taken from here
+    ├── MA0004701P_ex_S5_L001_R1_001.fastq.gz
+    ├── MA0004701P_ex_S5_L001_R2_001.fastq.gz
+    ├── MA0004701P_ex_S5_L002_R1_001.fastq.gz
+    ├── MA0004701P_ex_S5_L002_R2_001.fastq.gz
+    └── scrippscall_mit_single_146657420113136 <- The script expects that you are submitting the job from inside this directory
+    """
+    echo "$USAGE"
+    exit 1
+}
+
+
+# Check arguments
+if [ $# -eq 0 ]
+ then
+  usage
+fi
+
+# parsing Arguments
+key="$1"
+case $key in
+    -n|--nt)
+    THREADS="$2"
+esac
+
+
+# Set up variables and Defining directories
+DIR=$( pwd )
+MTOOLBOXDIR=/pro/NGSutils/MToolBox-master/MToolBox/
+BINDIR=/pro/scrippscall/mtDNA
+VCDIR=/pro/scrippscall/variant_calling
+source $VCDIR/parameters.sh
+
+# Check that nomenclature exists
+if [[ $DIR != *scrippscall_mit_single* ]]
+ then 
+  usage
+fi 
+
+# The id need to have this format LP6005831-???_???.bam, otherwise MToolBox will fail
+id=$( echo $DIR | awk -F'/' '{print $(NF-1)}' | awk -F'_' '{print $1}' |sed 's/$/-DNA_MIT/' )
+
+# From now on we will work on VARCALL dir
+VARCALLDIR=$DIR/MTOOLBOX
+mkdir $VARCALLDIR
+cd $VARCALLDIR
+
+# NB: We are using UCSC's hg19 for Exome.
+# There are a few minor differences between GRCh37 and hg19. 
+# The contig sequences are the same but the names are different, i.e. "1" may need to be converted to "chr1". 
+# In addition UCSC hg19 is currenly using the old mitochondrial sequence but NCBI and Ensembl have transitioned to NC_012920.
+# For using MtoolBox we need to align again to RSRS
+
+# Using Samtools to extract chrM
+# NB: BAMs may include duplicates entries at this stage
+echo "Extracting Mitochondrial DNA from exome BAM file..."
+BAMDIR=../../scrippscall_wes_single*/BAM
+bam_raw=$BAMDIR/input.merged.bam.realigned.bam.fixed.bam
+bam_raw_index=$BAMDIR/input.merged.bam.realigned.bam.fixed.bai
+out_raw=$id.bam
+
+if [[ $REF == *b37*.fasta ]]
+ then
+  chrM=MT
+ else
+  chrM=chrM
+fi
+
+$SAM view -b $bam_raw $chrM > $out_raw
+$SAM index $out_raw
+
+# Performing Variant calling and annotation with MToolBox
+echo "Analyzing mitochondrial DNA with MToolBox..."
+export PATH="$MTOOLBOXDIR:$PATH"
+cp $BINDIR/MToolBox_config.sh .
+MToolBox.sh -i MToolBox_config.sh -m "-t $THREADS"
+
+# We will be using the file 'prioritized_variants.txt'
+# Getting GT/ DP and HF information rom VCF_file.vcf
+# HF information is also in file(s) OUT*/*annotation.csv
+# OUT* may contain > 1 *annotation (haplotypes), still the HF will be the same on each
+
+# We will append the columns at the end
+echo "Appending Heteroplasmic Fraction to the output..."
+vcf_file=VCF_file.vcf
+in_file=prioritized_variants.txt
+out_file=append_$$.txt
+final_file=mit_prioritized_variants.txt
+parse_var=$VCDIR/parse_var.pl
+echo -e "REF\tALT\tGT\tDP\tHF" > $out_file
+for var in $(cut -f1 $in_file | sed '1d' | $parse_var) 
+do
+   grep -P "chrMT\t$var\t" $vcf_file | cut -f4,5,10 | tr ':' '\t' |cut -f1-5 >>  $out_file
+done
+paste $in_file $out_file > $final_file
+rm $out_file
+
+# Fin
+echo "All done!!!"
+exit 
