@@ -88,6 +88,7 @@ sub submit_cmd {
 
     my $cmd = shift;
     system("$cmd") == 0 or die("failed to execute: $!\n");
+    return 1;
 }
 
 1;
