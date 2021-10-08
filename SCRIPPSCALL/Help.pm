@@ -8,7 +8,7 @@ use Getopt::Long;
 
 =head1 NAME
 
-    SCRIPPSCALL::Help - Help file for the ALiBERO script
+    SCRIPPSCALL::Help - Help file for the SCRIPPSCALL script
 
 =head1 SYNOPSIS
 
@@ -41,6 +41,7 @@ sub usage {
     my $version = shift;
     my %arg     = ();
     GetOptions(
+        'v'         => sub { print "$version\n"; exit },
         'debug=i'   => \$arg{debug},        # numeric (integer)
         'v'         => \$arg{version},      # flag
         'verbose'   => \$arg{verbose},      # flag
@@ -52,18 +53,17 @@ sub usage {
     ) or pod2usage( -exitval => 0, -verbose => 1 );
 
     # Control check
-    if ( $arg{version} ) { print "$version\n"; exit 0 }
     pod2usage( -exitval => 0, -verbose => 2 ) if $arg{man};
     pod2usage( -exitval => 0, -verbose => 1 ) if $arg{help};
-    pod2usage( -exitval => 0, -verbose => 1 )
+    pod2usage( -exitval => 1, -verbose => 1 )
       if ( !$arg{ncpu} || !$arg{configfile} );
     pod2usage(
-        -exitval => 0,
+        -exitval => 1,
         -verbose => 1,
         -message => 'Option --i requires a config_file'
     ) if ( !-s $arg{configfile} );
     pod2usage(
-        -exitval => 0,
+        -exitval => 1,
         -verbose => 1,
         -message => 'Option --n requires a positive integer'
     ) if ( $arg{ncpu} <= 0 );    # Must be positive integer
