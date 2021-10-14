@@ -48,11 +48,13 @@ my $prompt           = 'Info:';
 my $spacer           = '*' x 28;
 my $arrow            = '=>';
 my $cmd              = '';
+my $author      = '(C) 2021 Manuel Rueda, PhD';
+my $license     = 'GNU General Public License v3';
 my $scrippscall_path = abs_path($0);
 
 # We personalize the STDERR (warn/die) messages
 $SIG{__WARN__} = sub { warn 'Warn: ', @_ };
-$SIG{__DIE__}  = sub { die 'Error: ', scalar localtime, " $arrow ", @_ };
+$SIG{__DIE__}  = sub { die  'Error: ',  scalar localtime, "\nError: $arrow ", @_ };
 
 # We tell Perl to flush right away STDOUT data
 $| = 1;
@@ -69,17 +71,18 @@ my $arg = Help::usage($version);
 my $config = Config::read_config_file( $arg->{configfile} );
 
 # Start SCRIPPSCALL
-say BOLD CYAN, $prompt;
-say CYAN,  "$prompt ScrippsCall $version";
-say RESET, "$prompt ScrippsCall exe: $scrippscall_path\n$prompt";
+say CYAN "$prompt ScrippsCall $version", RESET;
+say "$prompt ScrippsCall exe: $scrippscall_path";
+say "$prompt $author";
+say "$prompt $license\n$prompt";
 
 # Print arguments to stdout
 say BOLD YELLOW, "$prompt ARGUMENTS USED:", RESET;
-say WHITE, "$prompt --i $arg->{configfile}" if $arg->{configfile};
-say WHITE, "$prompt --n $arg->{ncpu}"       if $arg->{ncpu};
+say WHITE "$prompt --i $arg->{configfile}" if $arg->{configfile};
+say WHITE "$prompt --n $arg->{ncpu}"       if $arg->{ncpu};
 
 # Printing the config values to stdout according to the format below
-say WHITE, "$prompt";
+say WHITE "$prompt";
 say BOLD BLUE, "$prompt CONFIGURATION VALUES:", RESET;
 
 $~ = "CONFIG";
@@ -94,9 +97,9 @@ $prompt, $l_config, $arrow, $config->{$l_config}
 .
 
 # Start ScrippsCall
-say "$prompt $spacer";
-say BOLD CYAN, "$prompt STARTING SCRIPPSCALL FUN";
-say RESET $prompt;
+say $prompt;
+say BOLD CYAN "$prompt STARTING SCRIPPSCALL FUN";
+say RESET "$prompt $spacer";
 
 # Create the working dir
 mkdir $config->{projectdir};
@@ -130,7 +133,8 @@ my $wes = WES->new($rah_scrippscall);
 $wes->variant_calling();
 
 # END SCRIPPSCALL
-say BOLD GREEN, "$prompt $spacer\n$prompt ScrippsCall finished OK", RESET;
+say "$prompt $spacer";
+say BOLD GREEN, "$prompt SCRIPPSCALL FINISHED OK", RESET;
 
 # Optional message
 say "$prompt Date: ",            scalar localtime if $arg->{verbose};
