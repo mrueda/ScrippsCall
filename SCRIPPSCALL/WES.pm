@@ -36,19 +36,8 @@ Written by Manuel Rueda, PhD
 
 sub new {
 
-    my ( $class, $arg_sub ) = @_;
-    my $self = {
-        pipeline         => $arg_sub->{pipeline},
-        mode             => $arg_sub->{mode},
-        sample           => $arg_sub->{sample},
-        ncpu             => $arg_sub->{ncpu},
-        projectdir       => $arg_sub->{projectdir},
-        bash4_mit_cohort => $arg_sub->{bash4_mit_cohort},
-        bash4_mit_single => $arg_sub->{bash4_mit_single},
-        bash4_wes_cohort => $arg_sub->{bash4_wes_cohort},
-        bash4_wes_single => $arg_sub->{bash4_wes_single}
-
-    };
+    # Changes in $self performed at main
+    my ( $class, $self ) = @_;
     bless $self, $class;
     return $self;
 }
@@ -63,7 +52,7 @@ sub new {
 
 sub variant_calling {
 
-    my ($self)   = @_;
+    my $self   = shift;
     my $pipeline = $self->{pipeline};
     my $mode     = $self->{mode};
     my $dir      = $self->{projectdir};
@@ -90,5 +79,4 @@ sub submit_cmd {
     system("$cmd") == 0 or die("failed to execute: $!\n");
     return 1;
 }
-
 1;
