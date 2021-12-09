@@ -65,7 +65,7 @@ sub read_config_file {
     # Reading config file
     open( my $config, '<', $config_file );
     while ( defined( my $line = <$config> ) ) {
-        next if $line =~ /^(\s)*$/;    # skipping blank lines
+        next if $line =~ /^\s*$/;    # skipping blank lines
         next if $line =~ /^\s*#/;      # skipping commented lines
         chomp $line;
         $line =~ s/#.*//;              # no comments
@@ -109,14 +109,15 @@ sub read_config_file {
     $config{hostname} = hostname;
     $config{user}     = $user;
     chomp( my $ncpuhost = qx{/usr/bin/nproc} ) // 1;
-    $config{ncpuhost} = $ncpuhost;
+    $config{ncpuhost} = 0 + $ncpuhost; # coercing it to be a number
     $config{ncpuless} = $ncpuhost > 1 ? $ncpuhost - 1 : 1;
+    my $str_ncpuless = $param{ncpuless}; # We copy it (otherwise it will get "stringified" below and printed with "" in log.json)
     $config{zip} =
       ( -x '/usr/bin/pigz' )
-      ? "/usr/bin/pigz -p $config{ncpuless}"
+      ? "/usr/bin/pigz -p $str_ncpuless"
       : '/bin/gunzip';
 
-    # Check if the bash files exist have +x permission
+    # Check if the bash files exist and have +x permission
     die "You don't have +x permission for Bash's"
       unless ( -x $config{bash4parameters}
         && -x $config{bash4_wes_single}
