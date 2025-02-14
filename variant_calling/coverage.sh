@@ -35,7 +35,7 @@ if [ $# -ne 3 ]
 fi
 
 # set resources and parameters
-source /pro/scrippscall/variant_calling/parameters.sh
+source /media/mrueda/2TBS/CNAG/Project_CBI_Call/scrippscall/variant_calling/parameters.sh
 chrN=chr1
 REGION=$EXOM/hg19.$chrN.bed
 EXOME_COORD=$EXOM/hg19_coor.$chrN.txt

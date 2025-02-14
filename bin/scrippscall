@@ -1,0 +1,316 @@
+#!/usr/bin/env perl
+#
+#   Framework for the analysis of Illumina's NGS data
+#
+#   Last Modified; Oct/17/2017
+#
+#   Version 1.0.5
+#
+#   Copyright (C) 2015-2017 Manuel Rueda (mrueda@scripps.edu)
+#
+#   This program is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation; either version 3 of the License, or
+#   (at your option) any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public License
+#   along with this program; if not, see <https://www.gnu.org/licenses/>.
+#
+#   If this program helps you in your research, please cite.
+
+use strict;
+use warnings;
+use autodie;
+use feature qw(say);
+use Cwd qw(abs_path);
+use Term::ANSIColor qw(:constants);
+use JSON::XS;
+use FindBin qw($Bin);
+use lib "$Bin/../lib";
+use SCRIPPSCALL::Help;
+use SCRIPPSCALL::Config;
+use SCRIPPSCALL::WES;
+
+#############################################################
+#            Variables definition                           #
+#############################################################
+
+# ScrippsCall version
+my $version = '1.0.5';
+
+# Initialize a few more variables
+my $prompt           = 'Info:';
+my $spacer           = '*' x 28;
+my $arrow            = '=>';
+my $cmd              = '';
+my $author      = '(C) 2021 Manuel Rueda, PhD';
+my $license     = 'GNU General Public License v3';
+my $scrippscall_path = abs_path($0);
+
+# We personalize the STDERR (warn/die) messages
+$SIG{__WARN__} = sub { warn 'Warn: ', @_ };
+$SIG{__DIE__}  = sub { die  'Error: ',  scalar localtime, "\nError: $arrow ", @_ };
+
+# We tell Perl to flush right away STDOUT data
+$| = 1;
+
+##############################################################
+#                 Code starts here                           #
+##############################################################
+
+# Parsing arguments and getting help if needed
+my $arg = Help::usage($version);
+
+# Reading the configuration values from the config file.
+# NB: We'll avoid assigning $param->{foo} to vars unless their value changes often
+my $config = Config::read_config_file( $arg->{configfile} );
+
+# Start SCRIPPSCALL
+say CYAN "$prompt ScrippsCall $version", RESET;
+say "$prompt ScrippsCall exe: $scrippscall_path";
+say "$prompt $author";
+say "$prompt $license\n$prompt";
+
+# Print arguments to stdout
+say BOLD YELLOW, "$prompt ARGUMENTS USED:", RESET;
+say WHITE "$prompt --i $arg->{configfile}" if $arg->{configfile};
+say WHITE "$prompt --n $arg->{ncpu}"       if $arg->{ncpu};
+
+# Printing the config values to stdout according to the format below
+say WHITE "$prompt";
+say BOLD BLUE, "$prompt CONFIGURATION VALUES:", RESET;
+
+$~ = "CONFIG";
+my $l_config = '';
+foreach $l_config ( sort keys %{$config} ) {
+    write;
+}
+
+format CONFIG =
+@|||||@<<<<<<<<<<<<<<<< @<< @<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+$prompt, $l_config, $arrow, $config->{$l_config}
+.
+
+# Start ScrippsCall
+say $prompt;
+say BOLD CYAN "$prompt STARTING SCRIPPSCALL FUN";
+say RESET "$prompt $spacer";
+
+# Create the working dir
+mkdir $config->{projectdir};
+
+# Creating a log file in JSON ;-)
+my $job_log = $config->{projectdir} . '/log.json';
+open my $fh_log, '>', $job_log;
+my $coder = JSON::XS->new->utf8->canonical->pretty;
+my $json = $coder->encode( { arg => $arg, config => $config } ); # keys created on the fly with anonymous hash
+print $fh_log $json;
+close $fh_log;
+
+# Now submitting the pipeline through a bash script
+my $rah_scrippscall = {    # Ref anonymous hash to be used w/ the object wes
+    projectdir       => $config->{projectdir},
+    pipeline         => $config->{pipeline},
+    mode             => $config->{mode},
+    sample           => $config->{sample},
+    ncpu             => $arg->{ncpu},
+    bash4_mit_cohort => $config->{bash4_mit_cohort},
+    bash4_mit_single => $config->{bash4_mit_single},
+    bash4_wes_cohort => $config->{bash4_wes_cohort},
+    bash4_wes_single => $config->{bash4_wes_single}
+
+};
+say "$prompt Pipeline $arrow ", uc( $config->{pipeline} );
+say $prompt;
+say "$prompt Running the pipeline ", uc( $config->{pipeline} ), '...';
+
+my $wes = WES->new($rah_scrippscall);
+$wes->variant_calling();
+
+# END SCRIPPSCALL
+say "$prompt $spacer";
+say BOLD GREEN, "$prompt SCRIPPSCALL FINISHED OK", RESET;
+
+# Optional message
+say "$prompt Date: ",            scalar localtime if $arg->{verbose};
+say "$prompt Running time(s): ", time - $^T       if $arg->{verbose};
+
+# Say goodbye message
+my $goodbye = GoodBye->new();
+say WHITE, $prompt, ' ', $goodbye->say_goodbye();
+
+##############################################################
+#                   Code ends here                           #
+##############################################################
+
+__END__
+
+=head1 NAME
+
+ScrippsCall: A framework for the analysis of Illumina's NGS data.
+
+
+=head1 SYNOPSIS
+
+
+scrippscall -i <config_file> -n <n_cores> [-options]
+
+     Arguments:
+       -i|input                       Configuration file
+       -n                             Number of CPUs
+
+     Options:
+       -debug                         Print debugging (from 1 to 5, being 5 max)
+       -h|help                        Brief help message
+       -man                           Full documentation
+       -v                             Version
+       -verbose                       Verbosity on
+
+=head1 CITATION
+
+Rueda et al. "Molecular Autopsy for Sudden Death in the Young: Is Data Aggregation the Key?" Front. Cardiovasc. Med., 09 November 2017 | https://doi.org/10.3389/fcvm.2017.00072
+
+=head1 SUMMARY
+
+ScrippsCall is a framework for the analysis, annotation, filtering and reporting of NGS data coming from Illumina, Inc. sequencers. ScrippsCall was used to analyze WES data (including mtDNA) from all Molecular Autopsy and IDIOM cases at the Scripps Translational Science Institute (now SRTI).
+
+=head1 HOW TO RUN SCRIPPSCALL
+
+For executing ScrippsCall you will need:
+
+=over
+
+=item Input files
+
+A folder with Paired End fastq files (e.g., MA00001_exome/MA0000101P_ex/*{R1,R2}*fastq.gz).
+
+=item A Configuration (input) file
+
+A text file with the parameters that will control the job.
+
+=back
+
+Below are parameters that can be modified by the user along with their default values. 
+Pleave a blank space(s) or tab between the parameter and the value. 
+
+Essential parameters
+
+
+    * mode		single	 
+    * pipeline		wes             
+    * sample       	undef		 
+
+
+Optional parameters 
+
+
+    * capture               Agilent SureSelect  # Not used
+    * genome                hg19                # Not used
+    * organism              human               # Not used
+    * projectdir            my_name
+    * technology            Illumina HiSeq      # Not used
+
+ScrippsCall will create an independent project directory (projectdir) and store all information needed there. Thus, many concurrent calculations are supported.
+
+Note that ScrippsCall will not modify your original files.
+
+
+Please find below a detailed description of the important parameters:
+
+=over
+
+=item B<mode>
+
+ScrippsCall supports 2 modes, 'single' (default) and 'cohort' (for families or small cohorts).
+
+=item B<pipeline>
+
+The pipeline to use. Currently we have 'wes' (whole exome) and 'mit' (mtDNA) implemented. Note that in order to run 'cohort' in 'mit|wes' first you need to run 'single wes' on each sample.
+
+=item B<projectdir>
+
+The name of the directory where all the result will be stored. Note that an unique ID will be added to the name to avoid conflicting processes.
+
+=item B<sample>
+
+The path (relative path is fine) to the directory where the fastq files for the sample are.
+
+=back
+
+B<Examples:>
+
+
+   $ bin/scrippscall -i config_file -n 8
+
+   $ bin/scrippscall -i config_file -n 4 -verbose
+
+   $ bin/scrippscall --i config_file -n 16 > log 2>&1
+
+   $ $path_to_scrippscall/bin/scrippscall -i config_file -n 8 -debug 5
+
+
+NB: In a Trio, the number of unique (de novo) variants for the proband should be ~ 1% and for the F, M ~ 10%. Deviations from this are suspicious.
+
+
+=head1 SYSTEM REQUIREMENTS
+
+ScrippsCall runs on a multi-core Linux desktop/workstation/server. It's deliberate to stay away from HPC ;-) 
+
+
+    * Ideally a Ubuntu-like distribution (Linux Mint >= 13 recommended).
+    * 16GB of RAM.
+    * 4 cores (ideally i7 or Xeon).
+    * At least 250GB HDD.
+    * Perl > 5.10 and Term::ANSIColor and JSON::XS CPAN Modules
+    * All the files needed to run the WES pipeline (defined at variant_calling/parameters.sh).
+    * Optional => MToolBox L<https://github.com/mitoNGS/MToolBox> installed (if you want to get mtDNA analyzed).
+    * Optional => SG-Adviser - At Scripps the annotation was performed with SG-Adviser L<https://genomics.scripps.edu/adviser>.
+
+The Perl itself does not need a lot of RAM (max load will reach 2% on 16GB) but the mapping and I<samtools> operations benefit from large RAMs.
+The code has been written with parallelization in mind, and everything that could be parallelized was parallelized. However, it does not scale linearly with n_cpu. If you have, say, 12 cores, it may be better to send 3 concurrents (with 4 cores) jobs than 1 with 12 cores. This, however, comes at a cost of slower I/O speed.
+
+I am not using any CPAN's module to perform unit/integration test. Whenever I modified the code I make sure the csv/vcf match those in my test dir.
+
+=head1 COMMON ERRORS AND TREATMENT
+
+    * GATK: wes_{single,cohort}.sh stops at "-GATK Recalibrator SNP" or "-GATK Recalibrator INDEL" step:
+          - Error: MESSAGE: NaN LOD value assigned. Clustering with this few variants and these annotations is unsafe. Please consider raising the number of variants used to train the negative model (via --minNumBadVariants 5000, for example)
+            This happened when nINDELs was < 8000. Most exomes will get ~ 5K. 5K is not enough for GATK. After trial and error we set the nINDEL = 8000. Still, it can fail.
+            Solution: Increase the number of Indels to be included to > 8000 in wes_{single,cohort}.sh
+            NB: In wes_single.sh, only re-reun the sample that fails.
+
+         - Error: MESSAGE: Line 9999999: there aren't enough columns for line  /media/mrueda/2TB/genomes/GATK_bundle/hg19/dbsnp_137.hg19.vcf
+           Solution: Eliminating that line from the file /media/mrueda/2TB/genomes/GATK_bundle/hg19/dbsnp_137.hg19.vcf.ori and fill a README.
+    * MTOOLBOX:
+          -  Fails:
+             a) When UseIndelRealigner=true GATK fails every now and then and complains about unsupported N_CIGAR.
+                Added line 386 to Mtoolbox.sh => --filter_reads_with_N_cigar
+                If the issue persists try changing MToolbox_config.sh => UseIndelRealigner=false
+             b) Sometimes in cohort mode the mit_priotitized file is not created. Create it manually.
+          - If the DP < 10 the sample will not appear in Sample column
+          - In cohort mode, the HF can vary with respect to single sample
+             -  In general the concordance is very high, even when the DP is extremely different ( e.g., 2000 vs 100 in samples MA_56)
+             -  If the coverage of sample is very low (like that for ID_46 that had 5x-10x the HF will become meaningless.
+
+    * PERL: Some Linux distributions do not include the standard Perl library Pod::Usage. Please, install it if needed.
+
+=head1 AUTHOR
+
+Written by Manuel Rueda, PhD.
+The exome pipeline for Agilent SureSelect capture is an adaptation from that of I<gfzhang> for TSRI-HPC (2012).
+Info about TSRI can be found at L<http://www.tsri.edu>.
+
+=head1 REPORTING BUGS
+
+Report bugs or comments to <mrueda@scripps.edu>.
+
+=head1 COPYRIGHT AND LICENSE
+
+This PERL file is copyrighted, (C) 2015-2017 Manuel Rueda. See the LICENSE file included in this distribution.
+
+=cut

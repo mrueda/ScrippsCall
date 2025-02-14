@@ -37,7 +37,7 @@ if [ $# -ne 0 ]
   exit 1
 fi
 
-bedtools=/pro/NGSutils/bedtools2/bin/bedtools
+bedtools=/media/mrueda/2TBS/NGSutils/bedtools2/bin/bedtools
 dir=../../*_ex/*wes_single*/VARCALL/
 
 for vcf1 in $( ls -1 $dir/*.*QC.vcf )

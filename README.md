@@ -78,13 +78,13 @@ Please find below a detailed description of the important parameters:
 
 **Examples:**
 
-    $ ./scrippscall -i config_file -n 8
+    $ bin/scrippscall -i config_file -n 8
 
-    $ ./scrippscall -i config_file -n 4 -verbose
+    $ bin/scrippscall -i config_file -n 4 -verbose
 
-    $ ./scrippscall --i config_file -n 16 > log 2>&1
+    $ bin/scrippscall --i config_file -n 16 > log 2>&1
 
-    $ $path_to_scrippscall/scrippscall -i config_file -n 8 -debug 5
+    $ $path_to_scrippscall/bin/scrippscall -i config_file -n 8 -debug 5
 
 NB: In a Trio, the number of unique (de novo) variants for the proband should be ~ 1% and for the F, M ~ 10%. Deviations from this are suspicious.
 

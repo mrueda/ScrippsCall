@@ -68,7 +68,7 @@ case $key in
 esac
 
 # Set up variables
-BINDIR=/pro/scrippscall/variant_calling
+BINDIR=/media/mrueda/2TBS/CNAG/Project_CBI_Call/ScrippsCall/variant_calling
 source $BINDIR/parameters.sh
 
 # Scripts to calculate miscellanea stats on coverage (chr1) and determine sex

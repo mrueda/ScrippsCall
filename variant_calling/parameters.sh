@@ -1,15 +1,17 @@
 # Version: 1.0.5
 #
-DATADIR=/media/mrueda/4TB
+DATADIR=/media/mrueda/2TBS
 DBDIR=$DATADIR/Databases
-NGSUTILS=/pro/NGSutils
+NGSUTILS=$DATADIR/NGSutils
 
 # ENV
 export TMPDIR=$DATADIR/tmp
 export LC_ALL=C
 
 MEM=4G
-JAVA=/usr/bin/java
+#JAVA=/usr/bin/java
+JAVA=/usr/lib/jvm/java-8-openjdk-amd64/bin/java
+
 BWA=$NGSUTILS/bwa-0.7.17/bwa           # Needs ~6g RAM
 SAM=$NGSUTILS/samtools-0.1.19/samtools # x4 faster than v1.3
 PIC="$JAVA  -Xmx$MEM -Djava.io.tmpdir=$TMPDIR -jar $NGSUTILS/picard/build/libs/picard.jar"

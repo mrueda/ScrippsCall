@@ -72,7 +72,7 @@ case $key in
 esac
 
 # Set up variables
-BINDIR=/pro/scrippscall/variant_calling
+BINDIR=/media/mrueda/2TBS/CNAG/Project_CBI_Call/scrippscall/variant_calling
 source $BINDIR/parameters.sh
 
 # Scripts to calculate miscellanea stats
@@ -88,7 +88,7 @@ if [[ $DIR != *scrippscall_*cohort* ]]
 fi
 
 # Fetching the cohort id "MA00052"
-# /media/mrueda/2TB/Project_MA/ScrippsCall/Project_MA/MA00052_exome/scrippscall_cohort_1234567890
+# /media/mrueda/2TB/Project_MA/scrippscall/Project_MA/MA00052_exome/scrippscall_cohort_1234567890
 # MA00052 <---
 cohort=$( echo $DIR | awk -F'/' '{print $--NF}' | awk -F'_' '{print $1}' )
 echo $cohort

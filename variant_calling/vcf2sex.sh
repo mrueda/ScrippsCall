@@ -55,7 +55,7 @@ if [ $# -ne 1 ]
 fi
 
 vcf=$1
-stdesv='perl /pro/scrippscall/variant_calling/desv.pl'
+stdesv='perl /media/mrueda/2TBS/CNAG/Project_CBI_Call/scrippscall/variant_calling/desv.pl'
 
 # VCFs from exome should have only chr1..22,X,Y
 # Note that we are not filtering PAR (pseudoautosomic regions)
