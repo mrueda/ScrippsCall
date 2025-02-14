@@ -2,10 +2,10 @@
 set -eu 
 
 dir=/media/mrueda/2TBS/CNAG/Project_CBI_Call/
-scrippscall=/media/mrueda/2TBS/CNAG/Project_CBI_Call/scrippscall/scrippscall
-ncpu=10
+scrippscall=/media/mrueda/2TBS/CNAG/Project_CBI_Call/scrippscall/bin/scrippscall
+ncpu=12
 
-for dirname in MA00001_exome
+for dirname in MA00001_exome  MA00005_exome  MA00119_exome  MA01001_exome
 do
  cd $dir/$dirname
  echo $dirname

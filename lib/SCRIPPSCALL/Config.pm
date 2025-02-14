@@ -5,7 +5,8 @@ use warnings;
 use autodie;
 use Cwd qw(abs_path);
 use Sys::Hostname;
-use feature qw(say);
+use File::Spec::Functions qw(catdir catfile);
+use feature               qw(say);
 
 =head1 NAME
 
@@ -40,23 +41,23 @@ sub read_config_file {
 
     my $config_file      = shift;
     my $user             = $ENV{LOGNAME} || $ENV{USER} || getpwuid($<);
-    my $scrippscall_data = $main::Bin . '/variant_calling';
+    my $scrippscall_data = catdir( $main::Bin, '../variant_calling' );
 
     # We load %config with the default values
     my %config = (
 
-        mode             => 'single',                            # cohort
+        mode             => 'single',    # cohort
         sample           => undef,
         pipeline         => 'wes',
         user             => $user,
-        genome           => 'hg19',                              # b37
+        genome           => 'hg19',      # b37
         organism         => 'human',
-        bash4parameters  => "$scrippscall_data/parameters.sh",
-        bash4_wes_single => "$scrippscall_data/wes_single.sh",
-        bash4_wes_cohort => "$scrippscall_data/wes_cohort.sh",
-        bash4_mit_single => "$scrippscall_data/mit_single.sh",
-        bash4_mit_cohort => "$scrippscall_data/mit_cohort.sh",
-        bash4coverage    => "$scrippscall_data/coverage.sh",
+        bash4parameters  => catfile( $scrippscall_data, 'parameters.sh' ),
+        bash4_wes_single => catfile( $scrippscall_data, 'wes_single.sh' ),
+        bash4_wes_cohort => catfile( $scrippscall_data, 'wes_cohort.sh' ),
+        bash4_mit_single => catfile( $scrippscall_data, 'mit_single.sh' ),
+        bash4_mit_cohort => catfile( $scrippscall_data, 'mit_cohort.sh' ),
+        bash4coverage    => catfile( $scrippscall_data, 'coverage.sh' ),
         technology       => 'Illumina HiSeq',
         capture          => 'Agilent SureSelect',
         projectdir       => 'scrippscall'
@@ -66,11 +67,11 @@ sub read_config_file {
     open( my $config, '<', $config_file );
     while ( defined( my $line = <$config> ) ) {
         next if $line =~ /^\s*$/;    # skipping blank lines
-        next if $line =~ /^\s*#/;      # skipping commented lines
+        next if $line =~ /^\s*#/;    # skipping commented lines
         chomp $line;
-        $line =~ s/#.*//;              # no comments
-        $line =~ s/^\s+//;             # No leading white
-        $line =~ s/\s+$//;             # No trailing white
+        $line =~ s/#.*//;            # no comments
+        $line =~ s/^\s+//;           # No leading white
+        $line =~ s/\s+$//;           # No trailing white
 
         # Now we simplify naming. Forcing lower case for config name (not for value)
         my $regex = qr/^(\w+)\s+([\S\s]+)/;
@@ -78,13 +79,13 @@ sub read_config_file {
         my ( $key, $value ) = ( lc($1), $2 );
 
         # Check user typos in config name
-        my $config_syntax_ok = scalar grep { $_ eq $key } keys %config; #Note scalar context
+        my $config_syntax_ok = scalar grep { $_ eq $key } keys %config;    #Note scalar context
         die "Parameter '$key' does not exist (typo?)\n" if !$config_syntax_ok;
         $value = 'off'
           if ( lc($value) eq 'no'
             || lc($value) eq 'of'
-            || lc($value) eq 'false' );    # For consistency
-        $value = 'on' if ( lc($value) eq 'yes' || lc($value) eq 'true' ); # For consistency
+            || lc($value) eq 'false' );                                    # For consistency
+        $value = 'on' if ( lc($value) eq 'yes' || lc($value) eq 'true' );    # For consistency
 
         # Assignation to hash %config
         if ( $key eq 'sample' ) {
@@ -109,9 +110,9 @@ sub read_config_file {
     $config{hostname} = hostname;
     $config{user}     = $user;
     chomp( my $ncpuhost = qx{/usr/bin/nproc} ) // 1;
-    $config{ncpuhost} = 0 + $ncpuhost; # coercing it to be a number
+    $config{ncpuhost} = 0 + $ncpuhost;                       # coercing it to be a number
     $config{ncpuless} = $ncpuhost > 1 ? $ncpuhost - 1 : 1;
-    my $str_ncpuless = $config{ncpuless}; # We copy it (otherwise it will get "stringified" below and printed with "" in log.json)
+    my $str_ncpuless = $config{ncpuless};                    # We copy it (otherwise it will get "stringified" below and printed with "" in log.json)
     $config{zip} =
       ( -x '/usr/bin/pigz' )
       ? "/usr/bin/pigz -p $str_ncpuless"
