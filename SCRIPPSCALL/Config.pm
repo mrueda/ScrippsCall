@@ -111,7 +111,7 @@ sub read_config_file {
     chomp( my $ncpuhost = qx{/usr/bin/nproc} ) // 1;
     $config{ncpuhost} = 0 + $ncpuhost; # coercing it to be a number
     $config{ncpuless} = $ncpuhost > 1 ? $ncpuhost - 1 : 1;
-    my $str_ncpuless = $param{ncpuless}; # We copy it (otherwise it will get "stringified" below and printed with "" in log.json)
+    my $str_ncpuless = $config{ncpuless}; # We copy it (otherwise it will get "stringified" below and printed with "" in log.json)
     $config{zip} =
       ( -x '/usr/bin/pigz' )
       ? "/usr/bin/pigz -p $str_ncpuless"
