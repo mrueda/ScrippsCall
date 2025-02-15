@@ -1,5 +1,6 @@
 # Version: 1.0.5
 #
+
 DATADIR=/media/mrueda/2TBS
 DBDIR=$DATADIR/Databases
 NGSUTILS=$DATADIR/NGSutils
@@ -9,14 +10,22 @@ export TMPDIR=$DATADIR/tmp
 export LC_ALL=C
 
 MEM=4G
-#JAVA=/usr/bin/java
-JAVA=/usr/lib/jvm/java-8-openjdk-amd64/bin/java
-
-BWA=$NGSUTILS/bwa-0.7.17/bwa           # Needs ~6g RAM
-SAM=$NGSUTILS/samtools-0.1.19/samtools # x4 faster than v1.3
-PIC="$JAVA  -Xmx$MEM -Djava.io.tmpdir=$TMPDIR -jar $NGSUTILS/picard/build/libs/picard.jar"
-GATK="$JAVA -Xmx$MEM -Djava.io.tmpdir=$TMPDIR -jar $NGSUTILS/gatk/3.5/GenomeAnalysisTK.jar"
+ARCH=$(uname -m)  
+#JAVA=/usr/bin/java # Java 9
 #module load java/1.7.0_21
+
+if [ "$ARCH" == "aarch64" ]; then
+    JAVA=/usr/lib/jvm/java-8-openjdk-arm64/bin/java
+    BWA=$NGSUTILS/bwa-0.7.18_arm64/bwa           # Needs ~6g RAM
+    SAM=$NGSUTILS/samtools-0.1.19_arm64/samtools # x4 faster than v1.3
+else
+    JAVA=/usr/lib/jvm/java-8-openjdk-amd64/bin/java
+    BWA=$NGSUTILS/bwa-0.7.17/bwa           # Needs ~6g RAM
+    SAM=$NGSUTILS/samtools-0.1.19/samtools # x4 faster than v1.3
+fi
+
+PIC="$JAVA  -Xmx$MEM -Djava.io.tmpdir=$TMPDIR -jar $NGSUTILS/picard/build/libs/picard.jar"
+GATK="$JAVA -Xmx$MEM -Djava.io.tmpdir=$TMPDIR -Dgatk.report.telemetry=false -jar $NGSUTILS/gatk/3.5/GenomeAnalysisTK.jar"
 
 # GATK bundle, human genome hg19
 bundle=$DBDIR/GATK_bundle/b37
