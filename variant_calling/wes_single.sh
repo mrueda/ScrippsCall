@@ -68,8 +68,12 @@ case $key in
 esac
 
 # Set up variables
-BINDIR=/media/mrueda/2TBS/CNAG/Project_CBI_Call/ScrippsCall/variant_calling
-source $BINDIR/parameters.sh
+
+# Determine the directory where the script resides
+BINDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Source parameters.sh from the same directory
+source "$BINDIR/parameters.sh"
 
 # Scripts to calculate miscellanea stats on coverage (chr1) and determine sex
 COV=$BINDIR/coverage.sh
