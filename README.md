@@ -51,10 +51,9 @@ Optional parameters
     * capture               Agilent SureSelect  # Not used
     * genome                hg19                # Not used
     * organism              human               # Not used
-    * projectdir            my_name
     * technology            Illumina HiSeq      # Not used
 
-ScrippsCall will create an independent project directory (projectdir) and store all information needed there. Thus, many concurrent calculations are supported.
+ScrippsCall will create an independent project directory (scrippscall\_\*) and store all information needed there. Thus, many concurrent calculations are supported.
 
 Note that ScrippsCall will not modify your original files.
 
@@ -67,10 +66,6 @@ Please find below a detailed description of the important parameters:
 - **pipeline**
 
     The pipeline to use. Currently we have 'wes' (whole exome) and 'mit' (mtDNA) implemented. Note that in order to run 'cohort' in 'mit|wes' first you need to run 'single wes' on each sample.
-
-- **projectdir**
-
-    The name of the directory where all the result will be stored. Note that an unique ID will be added to the name to avoid conflicting processes.
 
 - **sample**
 

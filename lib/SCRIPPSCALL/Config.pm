@@ -59,8 +59,7 @@ sub read_config_file {
         bash4_mit_cohort => catfile( $scrippscall_data, 'mit_cohort.sh' ),
         bash4coverage    => catfile( $scrippscall_data, 'coverage.sh' ),
         technology       => 'Illumina HiSeq',
-        capture          => 'Agilent SureSelect',
-        projectdir       => 'scrippscall'
+        capture          => 'Agilent SureSelect'
     );
 
     # Reading config file
@@ -101,7 +100,7 @@ sub read_config_file {
     $config{date} = localtime();
     $config{projectdir} =
         $config{sample} . '/'
-      . $config{projectdir} . '_'
+      . 'scrippscall' . '_'
       . $config{pipeline} . '_'
       . $config{mode} . '_'
       . $config{id};    # User will make symbolic link to final folder
