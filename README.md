@@ -25,6 +25,12 @@ Rueda et al. "Molecular Autopsy for Sudden Death in the Young: Is Data Aggregati
 
 ScrippsCall is a framework for the analysis, annotation, filtering and reporting of NGS data coming from Illumina, Inc. sequencers. ScrippsCall was used to analyze WES data (including mtDNA) from all Molecular Autopsy and IDIOM cases at the Scripps Translational Science Institute (now SRTI).
 
+# INSTALLATION
+
+    git clone https://github.com/mrueda/ScrippsCall.git
+    sudo apt-get install cpanminus # Note we use sudo
+    cpanm --notest --installdeps .
+
 # HOW TO RUN SCRIPPSCALL
 
 For executing ScrippsCall you will need:
@@ -69,7 +75,7 @@ Please find below a detailed description of the important parameters:
 
 - **sample**
 
-    The path (relative path is fine) to the directory where the fastq files for the sample are.
+    The path (relative path is fine) to the directory where the fastq files for the sample are. See directory `examples` for more information.
 
 **Examples:**
 
