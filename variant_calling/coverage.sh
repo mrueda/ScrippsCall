@@ -34,8 +34,12 @@ if [ $# -ne 3 ]
   exit 1
 fi
 
-# set resources and parameters
-source /media/mrueda/2TBS/CNAG/Project_CBI_Call/scrippscall/variant_calling/parameters.sh
+# Determine the directory where the script resides
+BINDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Source parameters.sh from the same directory
+source "$BINDIR/parameters.sh"
+
 chrN=chr1
 REGION=$EXOM/hg19.$chrN.bed
 EXOME_COORD=$EXOM/hg19_coor.$chrN.txt

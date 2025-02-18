@@ -52,15 +52,15 @@ sub new {
 
 sub variant_calling {
 
-    my $self   = shift;
+    my $self     = shift;
     my $pipeline = $self->{pipeline};
     my $mode     = $self->{mode};
     my $dir      = $self->{projectdir};
-    my $ncpu     = $self->{ncpu};
+    my $nthread  = $self->{nthread};
     my $bash_str = 'bash4_' . $pipeline . '_' . $mode;
     my $bash     = $self->{$bash_str};
     my $log      = $bash_str . '.log';
-    my $cmd      = "cd $dir; $bash -n $ncpu > $log 2>&1";
+    my $cmd      = "cd $dir; $bash -n $nthread > $log 2>&1";
     submit_cmd($cmd);
     return 1;
 }

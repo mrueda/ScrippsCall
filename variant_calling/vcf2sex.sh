@@ -54,8 +54,14 @@ if [ $# -ne 1 ]
   exit 1
 fi
 
+# Determine the directory where the script resides
+BINDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Source parameters.sh from the same directory
+source "$BINDIR/parameters.sh"
+
 vcf=$1
-stdesv='perl /media/mrueda/2TBS/CNAG/Project_CBI_Call/scrippscall/variant_calling/desv.pl'
+stdesv=$BINDIR/desv.pl
 
 # VCFs from exome should have only chr1..22,X,Y
 # Note that we are not filtering PAR (pseudoautosomic regions)

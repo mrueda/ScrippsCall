@@ -8,7 +8,7 @@ scrippscall -i &lt;config\_file> -n &lt;n\_cores> \[-options\]
 
      Arguments:
        -i|input                       Configuration file
-       -n                             Number of CPUs
+       -n                             Number of CPUs/Cores/Threads
 
      Options:
        -debug                         Print debugging (from 1 to 5, being 5 max)
@@ -102,8 +102,9 @@ ScrippsCall runs on a multi-core Linux desktop/workstation/server. It's delibera
     * Optional => MToolBox L<https://github.com/mitoNGS/MToolBox> installed (if you want to get mtDNA analyzed).
     * Optional => SG-Adviser - At Scripps the annotation was performed with SG-Adviser L<https://genomics.scripps.edu/adviser>.
 
-The Perl itself does not need a lot of RAM (max load will reach 2% on 16GB) but the mapping and _samtools_ operations benefit from large RAMs.
-The code has been written with parallelization in mind, and everything that could be parallelized was parallelized. However, it does not scale linearly with n\_cpu. If you have, say, 12 cores, it may be better to send 3 concurrents (with 4 cores) jobs than 1 with 12 cores. This, however, comes at a cost of slower I/O speed.
+The Perl itself does not need a lot of RAM (max load will reach 2% on 16GB), but the mapping and _samtools_ operations benefit from large amounts of RAM.
+
+The code has been written with parallelization in mind, and everything that could be parallelized was parallelized. However, it does not scale linearly with `nthread`. If you have, say, 12 cores, it may be better to run 3 concurrent jobs (each using 4 cores) rather than a single job using all 12 cores. This, however, comes at the cost of slower I/O performance.
 
 I am not using any CPAN's module to perform unit/integration test. Whenever I modified the code I make sure the csv/vcf match those in my test dir.
 

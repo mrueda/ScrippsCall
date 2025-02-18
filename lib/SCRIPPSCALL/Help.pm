@@ -42,13 +42,13 @@ sub usage {
     my %arg     = ();
     GetOptions(
         'v'         => sub { print "$version\n"; exit },
-        'debug=i'   => \$arg{debug},        # numeric (integer)
-        'v'         => \$arg{version},      # flag
-        'verbose'   => \$arg{verbose},      # flag
-        'h|help'    => \$arg{help},         # flag
-        'man'       => \$arg{man},          # flag
-        'n=i'       => \$arg{ncpu},         # numeric (integer)
-        'i|input=s' => \$arg{configfile}    # string (-i as in AMBER MD package)
+        'debug=i'   => \$arg{debug},                       # numeric (integer)
+        'v'         => \$arg{version},                     # flag
+        'verbose'   => \$arg{verbose},                     # flag
+        'h|help'    => \$arg{help},                        # flag
+        'man'       => \$arg{man},                         # flag
+        'n=i'       => \$arg{nthread},                     # numeric (integer)
+        'i|input=s' => \$arg{configfile}                   # string (-i as in AMBER MD package)
 
     ) or pod2usage( -exitval => 0, -verbose => 1 );
 
@@ -56,7 +56,7 @@ sub usage {
     pod2usage( -exitval => 0, -verbose => 2 ) if $arg{man};
     pod2usage( -exitval => 0, -verbose => 1 ) if $arg{help};
     pod2usage( -exitval => 1, -verbose => 1 )
-      if ( !$arg{ncpu} || !$arg{configfile} );
+      if ( !$arg{nthread} || !$arg{configfile} );
     pod2usage(
         -exitval => 1,
         -verbose => 1,
@@ -66,7 +66,7 @@ sub usage {
         -exitval => 1,
         -verbose => 1,
         -message => 'Option --n requires a positive integer'
-    ) if ( $arg{ncpu} <= 0 );    # Must be positive integer
+    ) if ( $arg{nthread} <= 0 );    # Must be positive integer
 
     # Initialize undefs
     $arg{debug} = 0 if !$arg{debug};
