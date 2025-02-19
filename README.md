@@ -4,11 +4,11 @@ ScrippsCall: A framework for the analysis of Illumina's NGS data.
 
 # SYNOPSIS
 
-scrippscall -i &lt;config\_file> -n &lt;n\_cores> \[-options\]
+scrippscall -i &lt;config\_file> -t &lt;n\_threads> \[-options\]
 
      Arguments:
        -i|input                       Configuration file
-       -n                             Number of CPUs/Cores/Threads
+       -t                             Number of CPUs/Cores/Threads
 
      Options:
        -debug                         Print debugging (from 1 to 5, being 5 max)
@@ -79,13 +79,13 @@ Please find below a detailed description of the important parameters:
 
 **Examples:**
 
-    $ bin/scrippscall -i config_file -n 8
+    $ bin/scrippscall -i config_file -t 8
 
-    $ bin/scrippscall -i config_file -n 4 -verbose
+    $ bin/scrippscall -i config_file -t 4 -verbose
 
-    $ bin/scrippscall --i config_file -n 16 > log 2>&1
+    $ bin/scrippscall --i config_file -t 16 > log 2>&1
 
-    $ $path_to_scrippscall/bin/scrippscall -i config_file -n 8 -debug 5
+    $ $path_to_scrippscall/bin/scrippscall -i config_file -t 8 -debug 5
 
 NB: In a Trio, the number of unique (de novo) variants for the proband should be ~ 1% and for the F, M ~ 10%. Deviations from this are suspicious.
 
