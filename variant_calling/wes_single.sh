@@ -32,7 +32,7 @@ set -eu
 function usage {
 
     USAGE="""
-    Usage: $0 -n n_cpu
+    Usage: $0 -t n_threads
 
     NB1: The script is expecting that you follow STSI nomenclature for samples. 
          This will work    => MA0004701P_ex_S5_L001_R1_001.fastq.gz
@@ -63,7 +63,7 @@ fi
 # parsing Arguments
 key="$1"
 case $key in
-    -n|--nt)
+    -t|--t)
     THREADS="$2"
 esac
 

@@ -276,7 +276,7 @@ ScrippsCall runs on a multi-core Linux desktop/workstation/server. It's delibera
 
 The Perl itself does not need a lot of RAM (max load will reach 2% on 16GB), but the mapping and I<samtools> operations benefit from large amounts of RAM.
 
-The code has been written with parallelization in mind, and everything that could be parallelized was parallelized. However, it does not scale linearly with C<nthread>. If you have, say, 12 cores, it may be better to run 3 concurrent jobs (each using 4 cores) rather than a single job using all 12 cores. This, however, comes at the cost of slower I/O performance.
+The code is fully parallelized but doesn't scale linearly with C<nthread>. The sweet spot is 4 cores/threads. If you have 12 cores, running 3 jobs with 4 cores each may be better than one using all 12, though at the cost of slower I/O.
 
 I am not using any CPAN's module to perform unit/integration test. Whenever I modified the code I make sure the csv/vcf match those in my test dir.
 
