@@ -16,6 +16,6 @@ pipeline        wes
 sample          $dir/$dirname
 EOF
 
-$scrippscall -n $ncpu -i $dirname.wes_cohort.in 
+$scrippscall -t $ncpu -i $dirname.wes_cohort.in 
 cd ..
 done

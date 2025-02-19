@@ -18,7 +18,7 @@ mode            single
 pipeline        wes
 sample          $dir/$dirname/$sample
 EOF
-$scrippscall -n $ncpu -i $sample.wes_single.in > $sample.wes_single.log 2>&1
+$scrippscall -t $ncpu -i $sample.wes_single.in > $sample.wes_single.log 2>&1
   cd ..
  done
 cd ..
