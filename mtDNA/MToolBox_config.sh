@@ -1,7 +1,7 @@
 #!/bin/bash
 
-BINDIR=/pro/NGSutils
-DBDIR=/media/mrueda/4TB/Databases/mtDNA
+BINDIR=/media/mrueda/2TBS/NGSutils
+DBDIR=/media/mrueda/2TBS/Databases/mtDNA
 
 ######################MTOOLBOX CONFIG FILE###################################################################
 ##If the default installation of MToolBox was used (install.sh), the user should specify 

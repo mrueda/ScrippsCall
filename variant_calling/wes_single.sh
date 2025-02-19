@@ -67,8 +67,6 @@ case $key in
     THREADS="$2"
 esac
 
-# Set up variables
-
 # Determine the directory where the script resides
 BINDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 

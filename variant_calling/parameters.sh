@@ -26,6 +26,7 @@ fi
 
 PIC="$JAVA  -Xmx$MEM -Djava.io.tmpdir=$TMPDIR -jar $NGSUTILS/picard/build/libs/picard.jar"
 GATK="$JAVA -Xmx$MEM -Djava.io.tmpdir=$TMPDIR -Dgatk.report.telemetry=false -jar $NGSUTILS/gatk/3.5/GenomeAnalysisTK.jar"
+MTOOLBOXDIR=$NGSUTILS/MToolBox-master/MToolBox
 
 # GATK bundle, human genome hg19
 bundle=$DBDIR/GATK_bundle/b37

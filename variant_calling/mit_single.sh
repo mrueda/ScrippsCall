@@ -62,12 +62,15 @@ case $key in
 esac
 
 
+# Determine the directory where the script resides
+BINDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Source parameters.sh from the same directory
+source "$BINDIR/parameters.sh"
+
 # Set up variables and Defining directories
 DIR=$( pwd )
-MTOOLBOXDIR=/pro/NGSutils/MToolBox-master/MToolBox/
-BINDIR=/pro/scrippscall/mtDNA
-VCDIR=/pro/scrippscall/variant_calling
-source $VCDIR/parameters.sh
+BINDIRMTB=$BINDIR/../mtDNA
 
 # Check that nomenclature exists
 if [[ $DIR != *scrippscall_mit_single* ]]
@@ -110,7 +113,7 @@ $SAM index $out_raw
 # Performing Variant calling and annotation with MToolBox
 echo "Analyzing mitochondrial DNA with MToolBox..."
 export PATH="$MTOOLBOXDIR:$PATH"
-cp $BINDIR/MToolBox_config.sh .
+cp $BINDIRMTB/MToolBox_config.sh .
 MToolBox.sh -i MToolBox_config.sh -m "-t $THREADS"
 
 # We will be using the file 'prioritized_variants.txt'
@@ -124,7 +127,7 @@ vcf_file=VCF_file.vcf
 in_file=prioritized_variants.txt
 out_file=append_$$.txt
 final_file=mit_prioritized_variants.txt
-parse_var=$VCDIR/parse_var.pl
+parse_var=$BINDIR/parse_var.pl
 echo -e "REF\tALT\tGT\tDP\tHF" > $out_file
 for var in $(cut -f1 $in_file | sed '1d' | $parse_var) 
 do
