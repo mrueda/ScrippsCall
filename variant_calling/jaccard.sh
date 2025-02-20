@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 #   STSI's Exome Pipeline -> Relatedness determination for families
 #

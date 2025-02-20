@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # 
 #   STSI's mt-DNA Pipeline Bash script.
 #   This pipeline works at the the sample level, for cohorts you will 

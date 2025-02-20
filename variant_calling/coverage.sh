@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 #   STSI's Coverage stats for chr1 Bash script.
 #

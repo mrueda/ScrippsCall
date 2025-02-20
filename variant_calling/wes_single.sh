@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 #   STSI's Exome Pipeline Bash script.
 #   This pipeline works at the sample level. 
@@ -180,11 +180,20 @@ $PIC \
       OUTPUT=$out \
       SO=coordinate \
       VALIDATION_STRINGENCY=SILENT \
-      CREATE_INDEX=true 2>> $LOG
+      CREATE_INDEX=false 2>> $LOG
+#      CREATE_INDEX=true 2>> $LOG # mrueda 022025
 
 # Deleting unused *bam *bai to save space
 rm *fastq.gz.*ba?
  
+# Filter out malformed reads
+# Added 022025 due to errors on mrueda-ws5
+$SAM view -h $out | \
+awk 'substr($0,1,1)=="@" || ($6!~/[0-9]+H/ && length($10)==length($11))' | \
+$SAM view -Sb -o output.filtered.bam
+mv output.filtered.bam $out
+$SAM index $out
+
 # Local realignment around indels -> STEP1
 # This step is CPU consuming
 echo "Local realignment around indels"
