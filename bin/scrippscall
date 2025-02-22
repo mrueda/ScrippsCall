@@ -48,7 +48,7 @@ my $prompt           = 'Info:';
 my $spacer           = '*' x 28;
 my $arrow            = '=>';
 my $cmd              = '';
-my $author           = '(C) 2021 Manuel Rueda, PhD';
+my $author           = '(C) 2015-2017 Manuel Rueda, PhD';
 my $license          = 'GNU General Public License v3';
 my $scrippscall_path = abs_path($0);
 
@@ -271,8 +271,14 @@ ScrippsCall runs on a multi-core Linux desktop/workstation/server. It's delibera
     * At least 250GB HDD.
     * Perl > 5.10 and Term::ANSIColor and JSON::XS CPAN Modules
     * All the files needed to run the WES pipeline (defined at variant_calling/parameters.sh).
+      - Agile SureSelect for hg19.
+      - Java 8: $sudo apt install openjdk-8-jdk.
+      - GATK 3.5 and its bundle for hg19 (no longer available). b37 also works yet the capture was built for hg19 so VCF results may vary.
     * Optional => MToolBox L<https://github.com/mitoNGS/MToolBox> installed (if you want to get mtDNA analyzed).
+      - You will need to have Python 2.7 installed and working: $ sudo apt install python2
+      - C<pandas> in $PYTHONPATH env variable
     * Optional => SG-Adviser - At Scripps the annotation was performed with SG-Adviser L<https://genomics.scripps.edu/adviser>.
+  
 
 The Perl itself does not need a lot of RAM (max load will reach 2% on 16GB), but the mapping and I<samtools> operations benefit from large amounts of RAM.
 

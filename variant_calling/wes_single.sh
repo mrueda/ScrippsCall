@@ -190,7 +190,7 @@ rm *fastq.gz.*ba?
 # Added 022025 due to errors on mrueda-ws5
 $SAM view -h $out | \
 awk 'substr($0,1,1)=="@" || ($6!~/[0-9]+H/ && length($10)==length($11))' | \
-$SAM view -Sb -o output.filtered.bam
+$SAM view -Sb - > output.filtered.bam
 mv output.filtered.bam $out
 $SAM index $out
 

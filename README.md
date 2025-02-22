@@ -93,14 +93,20 @@ NB: In a Trio, the number of unique (de novo) variants for the proband should be
 
 ScrippsCall runs on a multi-core Linux desktop/workstation/server. It's deliberate to stay away from HPC ;-) 
 
-    * Ideally a Ubuntu-like distribution (Linux Mint >= 13 recommended).
-    * 16GB of RAM.
-    * 4 cores (ideally i7 or Xeon).
-    * At least 250GB HDD.
-    * Perl > 5.10 and Term::ANSIColor and JSON::XS CPAN Modules
-    * All the files needed to run the WES pipeline (defined at variant_calling/parameters.sh).
-    * Optional => MToolBox L<https://github.com/mitoNGS/MToolBox> installed (if you want to get mtDNA analyzed).
-    * Optional => SG-Adviser - At Scripps the annotation was performed with SG-Adviser L<https://genomics.scripps.edu/adviser>.
+      * Ideally a Ubuntu-like distribution (Linux Mint >= 13 recommended).
+      * 16GB of RAM.
+      * 4 cores (ideally i7 or Xeon).
+      * At least 250GB HDD.
+      * Perl > 5.10 and Term::ANSIColor and JSON::XS CPAN Modules
+      * All the files needed to run the WES pipeline (defined at variant_calling/parameters.sh).
+        - Agile SureSelect for hg19.
+        - Java 8: $sudo apt install openjdk-8-jdk.
+        - GATK 3.5 and its bundle for hg19 (no longer available). b37 also works yet the capture was built for hg19 so VCF results may vary.
+      * Optional => MToolBox L<https://github.com/mitoNGS/MToolBox> installed (if you want to get mtDNA analyzed).
+        - You will need to have Python 2.7 installed and working: $ sudo apt install python2
+        - C<pandas> in $PYTHONPATH env variable
+      * Optional => SG-Adviser - At Scripps the annotation was performed with SG-Adviser L<https://genomics.scripps.edu/adviser>.
+    
 
 The Perl itself does not need a lot of RAM (max load will reach 2% on 16GB), but the mapping and _samtools_ operations benefit from large amounts of RAM.
 
