@@ -56,11 +56,11 @@ sub variant_calling {
     my $pipeline = $self->{pipeline};
     my $mode     = $self->{mode};
     my $dir      = $self->{projectdir};
-    my $nthread  = $self->{nthread};
+    my $threads  = $self->{threads};
     my $bash_str = 'bash4_' . $pipeline . '_' . $mode;
     my $bash     = $self->{$bash_str};
     my $log      = $bash_str . '.log';
-    my $cmd      = "cd $dir; $bash -t $nthread > $log 2>&1";
+    my $cmd      = "cd $dir; $bash -t $threads > $log 2>&1";
     submit_cmd($cmd);
     return 1;
 }

@@ -47,7 +47,7 @@ sub usage {
         'verbose'     => \$arg{verbose},                     # flag
         'h|help'      => \$arg{help},                        # flag
         'man'         => \$arg{man},                         # flag
-        't|threads=i' => \$arg{nthread},                     # numeric (integer)
+        't|threads=i' => \$arg{threads},                     # numeric (integer)
         'i|input=s'   => \$arg{configfile}                   # string (-i as in AMBER MD package)
 
     ) or pod2usage( -exitval => 0, -verbose => 1 );
@@ -56,7 +56,7 @@ sub usage {
     pod2usage( -exitval => 0, -verbose => 2 ) if $arg{man};
     pod2usage( -exitval => 0, -verbose => 1 ) if $arg{help};
     pod2usage( -exitval => 1, -verbose => 1 )
-      if ( !$arg{nthread} || !$arg{configfile} );
+      if ( !$arg{threads} || !$arg{configfile} );
     pod2usage(
         -exitval => 1,
         -verbose => 1,
@@ -66,7 +66,7 @@ sub usage {
         -exitval => 1,
         -verbose => 1,
         -message => 'Option --n requires a positive integer'
-    ) if ( $arg{nthread} <= 0 );    # Must be positive integer
+    ) if ( $arg{threads} <= 0 );    # Must be positive integer
 
     # Initialize undefs
     $arg{debug} = 0 if !$arg{debug};

@@ -108,13 +108,13 @@ sub read_config_file {
     $config{output}   = $tmp[-1];
     $config{hostname} = hostname;
     $config{user}     = $user;
-    chomp( my $nthreadhost = qx{/usr/bin/nproc} ) // 1;
-    $config{nthreadhost} = 0 + $nthreadhost;                          # coercing it to be a number
-    $config{nthreadless} = $nthreadhost > 1 ? $nthreadhost - 1 : 1;
-    my $str_nthreadless = $config{nthreadless};                       # We copy it (otherwise it will get "stringified" below and printed with "" in log.json)
+    chomp( my $threadshost = qx{/usr/bin/nproc} ) // 1;
+    $config{threadshost} = 0 + $threadshost;                          # coercing it to be a number
+    $config{threadsless} = $threadshost > 1 ? $threadshost - 1 : 1;
+    my $str_threadsless = $config{threadsless};                       # We copy it (otherwise it will get "stringified" below and printed with "" in log.json)
     $config{zip} =
       ( -x '/usr/bin/pigz' )
-      ? "/usr/bin/pigz -p $str_nthreadless"
+      ? "/usr/bin/pigz -p $str_threadsless"
       : '/bin/gunzip';
 
     # Check if the bash files exist and have +x permission
