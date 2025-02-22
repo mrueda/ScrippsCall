@@ -41,14 +41,14 @@ sub usage {
     my $version = shift;
     my %arg     = ();
     GetOptions(
-        'v'         => sub { print "$version\n"; exit },
-        'debug=i'   => \$arg{debug},                       # numeric (integer)
-        'v'         => \$arg{version},                     # flag
-        'verbose'   => \$arg{verbose},                     # flag
-        'h|help'    => \$arg{help},                        # flag
-        'man'       => \$arg{man},                         # flag
-        't=i'       => \$arg{nthread},                     # numeric (integer)
-        'i|input=s' => \$arg{configfile}                   # string (-i as in AMBER MD package)
+        'v'           => sub { print "$version\n"; exit },
+        'debug=i'     => \$arg{debug},                       # numeric (integer)
+        'v'           => \$arg{version},                     # flag
+        'verbose'     => \$arg{verbose},                     # flag
+        'h|help'      => \$arg{help},                        # flag
+        'man'         => \$arg{man},                         # flag
+        't|threads=i' => \$arg{nthread},                     # numeric (integer)
+        'i|input=s'   => \$arg{configfile}                   # string (-i as in AMBER MD package)
 
     ) or pod2usage( -exitval => 0, -verbose => 1 );
 

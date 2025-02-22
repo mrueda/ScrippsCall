@@ -162,7 +162,7 @@ scrippscall -i <config_file> -t <n_threads> [-options]
 
      Arguments:
        -i|input                       Configuration file
-       -t                             Number of CPUs/Cores/Threads
+       -t|threads                     Number of CPUs/Cores/Threads
 
      Options:
        -debug                         Print debugging (from 1 to 5, being 5 max)
