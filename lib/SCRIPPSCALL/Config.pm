@@ -5,6 +5,7 @@ use warnings;
 use autodie;
 use Cwd qw(abs_path);
 use Sys::Hostname;
+use List::Util            qw(all);
 use File::Spec::Functions qw(catdir catfile);
 use feature               qw(say);
 
@@ -46,11 +47,11 @@ sub read_config_file {
     # We load %config with the default values
     my %config = (
 
-        mode             => 'single',    # cohort
+        mode             => 'single',         # cohort
         sample           => undef,
         pipeline         => 'wes',
         user             => $user,
-        genome           => 'hg19',      # b37
+        genome           => 'hg19',           # b37
         organism         => 'Homo Sapiens',
         bash4parameters  => catfile( $scrippscall_data, 'parameters.sh' ),
         bash4_wes_single => catfile( $scrippscall_data, 'wes_single.sh' ),
@@ -58,6 +59,8 @@ sub read_config_file {
         bash4_mit_single => catfile( $scrippscall_data, 'mit_single.sh' ),
         bash4_mit_cohort => catfile( $scrippscall_data, 'mit_cohort.sh' ),
         bash4coverage    => catfile( $scrippscall_data, 'coverage.sh' ),
+        bash4jaccard     => catfile( $cbicall_data,     'jaccard.sh' ),
+        bash4vcf2sex     => catfile( $cbicall_data,     'vcf2sex.sh' ),
         technology       => 'Illumina HiSeq',
         capture          => 'Agilent SureSelect'
     );
@@ -117,14 +120,13 @@ sub read_config_file {
       ? "/usr/bin/pigz -p $str_threadsless"
       : '/bin/gunzip';
 
-    # Check if the bash files exist and have +x permission
-    die "You don't have +x permission for Bash's"
-      unless ( -x $config{bash4parameters}
-        && -x $config{bash4_wes_single}
-        && -x $config{bash4_wes_cohort}
-        && -x $config{bash4_mit_single}
-        && -x $config{bash4_mit_cohort}
-        && -x $config{bash4coverage} );
+    # Check if all required bash files exist and have +x permission
+    die "You don't have +x permission for one or more Bash files"
+      unless all { -x $config{$_} }
+      qw(
+      bash4parameters bash4_wes_single bash4_wes_cohort
+      bash4_mit_single bash4_mit_cohort bash4coverage bash4jaccard bash4vcf2sex
+      );
 
     return wantarray ? %config : \%config;
 }
