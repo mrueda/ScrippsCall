@@ -81,7 +81,7 @@ source "$BINDIR/parameters.sh"
 
 # Set up variables and Defining directories
 DIR=$( pwd )
-BINDIRMTB=$BINDIR/../mtDNA
+BINDIRMTB=$BINDIR/../mtdna
 
 # Check that nomenclature exists
 if [[ $DIR != *scrippscall_mit_cohort* ]]
