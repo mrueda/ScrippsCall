@@ -298,10 +298,9 @@ I am not using any CPAN's module to perform unit/integration test. Whenever I mo
            Solution: Eliminating that line from the file /media/mrueda/2TB/genomes/GATK_bundle/hg19/dbsnp_137.hg19.vcf.ori and fill a README.
     * MTOOLBOX:
           -  Fails:
-             a) When UseIndelRealigner=true GATK fails every now and then and complains about unsupported N_CIGAR.
+             -  When UseIndelRealigner=true GATK fails every now and then and complains about unsupported N_CIGAR.
                 Added line 386 to Mtoolbox.sh => --filter_reads_with_N_cigar
                 If the issue persists try changing MToolbox_config.sh => UseIndelRealigner=false
-             b) Sometimes in cohort mode the mit_priotitized file is not created. Create it manually.
           - If the DP < 10 the sample will not appear in Sample column
           - In cohort mode, the HF can vary with respect to single sample
              -  In general the concordance is very high, even when the DP is extremely different ( e.g., 2000 vs 100 in samples MA_56)
