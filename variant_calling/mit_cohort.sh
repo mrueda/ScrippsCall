@@ -73,12 +73,15 @@ case $key in
 esac
 
 
+# Determine the directory where the script resides
+BINDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Source parameters.sh from the same directory
+source "$BINDIR/parameters.sh"
+
 # Set up variables and Defining directories
 DIR=$( pwd )
-MTOOLBOXDIR=/pro/NGSutils/MToolBox-master/MToolBox/
-BINDIR=/pro/scrippscall/mtDNA
-VCDIR=/pro/scrippscall/variant_calling
-source $VCDIR/parameters.sh
+BINDIRMTB=$BINDIR/../mtDNA
 
 # Check that nomenclature exists
 if [[ $DIR != *scrippscall_mit_cohort* ]]
@@ -133,7 +136,11 @@ done
 # Performing Variant calling and annotation with MToolBox
 echo "Analyzing mitochondrial DNA with MToolBox..."
 export PATH="$MTOOLBOXDIR:$PATH"
-cp $BINDIR/MToolBox_config.sh .
+
+# Add the local site-packages to PYTHONPATH
+export PYTHONPATH=~/.local/lib/python2.7/site-packages:${PYTHONPATH:-}
+
+cp $BINDIRMTB/MToolBox_config.sh .
 MToolBox.sh -i MToolBox_config.sh -m "-t $THREADS"
 
 # We will be using the file 'prioritized_variants.txt'
@@ -148,12 +155,12 @@ vcf_tmp=VCF_file_$$.vcf
 in_file=prioritized_variants.txt
 out_file=append_$$.txt
 final_file=mit_prioritized_variants.txt
-parse_var=$VCDIR/parse_var.pl
-parse_prior=$VCDIR/parse_prioritized.pl
+parse_var=$BINDIR/parse_var.pl
+parse_prior=$BINDIR/parse_prioritized.pl
 grep ^#CHROM $vcf_file > $vcf_tmp
 for var in $(cut -f1 $in_file | sed '1d' | $parse_var) 
 do
- grep -P "chrMT\t$var\t" $vcf_file >>  $vcf_tmp
+  grep -P "chrMT\t$var\t" $vcf_file >>  $vcf_tmp  || echo "$var not found"
 done
 $parse_prior -i $vcf_tmp > $out_file
 paste $in_file $out_file > $final_file

@@ -113,6 +113,10 @@ $SAM index $out_raw
 # Performing Variant calling and annotation with MToolBox
 echo "Analyzing mitochondrial DNA with MToolBox..."
 export PATH="$MTOOLBOXDIR:$PATH"
+
+# Add the local site-packages to PYTHONPATH
+export PYTHONPATH=~/.local/lib/python2.7/site-packages:${PYTHONPATH:-}
+
 cp $BINDIRMTB/MToolBox_config.sh .
 MToolBox.sh -i MToolBox_config.sh -m "-t $THREADS"
 
@@ -123,7 +127,14 @@ MToolBox.sh -i MToolBox_config.sh -m "-t $THREADS"
 
 # We will append the columns at the end
 echo "Appending Heteroplasmic Fraction to the output..."
-vcf_file=VCF_file.vcf
+vcf_file="VCF_file.vcf"
+
+# Check if the file exists
+if [ ! -f "$vcf_file" ]; then
+    echo "Error: File '$vcf_file' not found!"
+    exit 1
+fi
+
 in_file=prioritized_variants.txt
 out_file=append_$$.txt
 final_file=mit_prioritized_variants.txt
