@@ -60,7 +60,7 @@ MA00024_exome  <-- ID taken from here
 
 
 # Check arguments
-if [ $# -eq 0 ]
+if [ $# -ne 2 ]
  then
   usage
 fi

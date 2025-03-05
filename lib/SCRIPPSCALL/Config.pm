@@ -51,7 +51,7 @@ sub read_config_file {
         pipeline         => 'wes',
         user             => $user,
         genome           => 'hg19',      # b37
-        organism         => 'human',
+        organism         => 'Homo Sapiens',
         bash4parameters  => catfile( $scrippscall_data, 'parameters.sh' ),
         bash4_wes_single => catfile( $scrippscall_data, 'wes_single.sh' ),
         bash4_wes_cohort => catfile( $scrippscall_data, 'wes_cohort.sh' ),

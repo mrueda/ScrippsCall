@@ -43,7 +43,6 @@ sub usage {
     GetOptions(
         'v'           => sub { print "$version\n"; exit },
         'debug=i'     => \$arg{debug},                       # numeric (integer)
-        'v'           => \$arg{version},                     # flag
         'verbose'     => \$arg{verbose},                     # flag
         'h|help'      => \$arg{help},                        # flag
         'man'         => \$arg{man},                         # flag

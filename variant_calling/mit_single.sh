@@ -3,7 +3,7 @@
 #   STSI's mt-DNA Pipeline Bash script.
 #   This pipeline works at the the sample level, for cohorts you will 
 #   need to excute "mtdna_cohort.sh". This way, if a new relatives comes, 
-#   you cand easily add it ia posteriori.
+#   you cand easily add it a posteriori.
 #
 #   Last Modified; Aug/08/2016
 #
@@ -49,7 +49,7 @@ MA00047_exome
 
 
 # Check arguments
-if [ $# -eq 0 ]
+if [ $# -ne 2 ]
  then
   usage
 fi

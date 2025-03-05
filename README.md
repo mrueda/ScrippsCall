@@ -56,7 +56,7 @@ Optional parameters
 
     * capture               Agilent SureSelect  # Not used
     * genome                hg19                # Not used
-    * organism              human               # Not used
+    * organism              Homo Sapiens        # Not used
     * technology            Illumina HiSeq      # Not used
 
 ScrippsCall will create an independent project directory (scrippscall\_\*) and store all information needed there. Thus, many concurrent calculations are supported.
