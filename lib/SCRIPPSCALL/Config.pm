@@ -42,7 +42,7 @@ sub read_config_file {
 
     my $config_file      = shift;
     my $user             = $ENV{LOGNAME} || $ENV{USER} || getpwuid($<);
-    my $scrippscall_data = abs_path(catdir($main::Bin, '../pipelines') );
+    my $scrippscall_data = abs_path(catdir($main::Bin, '../workflows') );
 
     # We load %config with the default values
     my %config = (
