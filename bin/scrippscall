@@ -52,9 +52,9 @@ my $author           = '(C) 2015-2017 Manuel Rueda, PhD';
 my $license          = 'GNU General Public License v3';
 my $scrippscall_path = abs_path($0);
 
-# We personalize the STDERR (warn/die) messages
-$SIG{__WARN__} = sub { warn 'Warn: ', @_ };
-$SIG{__DIE__} = sub { die 'Error: ', scalar localtime, "\nError: $arrow ", @_ };
+# Personalize warn and die functions
+$SIG{__WARN__} = sub { warn BOLD YELLOW "Warn: ", @_ };
+$SIG{__DIE__}  = sub { die BOLD RED "Error: ", @_ };
 
 # We tell Perl to flush right away STDOUT data
 $| = 1;
