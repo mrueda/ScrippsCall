@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 # 
-#   STSI's mt-DNA Pipeline Bash script.
-#   This pipeline works at the the sample level, for cohorts you will 
-#   need to excute "mtdna_cohort.sh". This way, if a new relatives comes, 
-#   you cand easily add it ia posteriori.
+#   STSI's mt-DNA Pipeline Cohort Bash script.
 #
 #   Last Modified; Oct/25/2016
 #

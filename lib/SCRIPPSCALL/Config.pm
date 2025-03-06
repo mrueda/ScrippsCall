@@ -42,7 +42,7 @@ sub read_config_file {
 
     my $config_file      = shift;
     my $user             = $ENV{LOGNAME} || $ENV{USER} || getpwuid($<);
-    my $scrippscall_data = catdir( $main::Bin, '../variant_calling' );
+    my $scrippscall_data = abs_path(catdir($main::Bin, '../pipelines') );
 
     # We load %config with the default values
     my %config = (
@@ -59,8 +59,8 @@ sub read_config_file {
         bash4_mit_single => catfile( $scrippscall_data, 'mit_single.sh' ),
         bash4_mit_cohort => catfile( $scrippscall_data, 'mit_cohort.sh' ),
         bash4coverage    => catfile( $scrippscall_data, 'coverage.sh' ),
-        bash4jaccard     => catfile( $cbicall_data,     'jaccard.sh' ),
-        bash4vcf2sex     => catfile( $cbicall_data,     'vcf2sex.sh' ),
+        bash4jaccard     => catfile( $scrippscall_data, 'jaccard.sh' ),
+        bash4vcf2sex     => catfile( $scrippscall_data, 'vcf2sex.sh' ),
         technology       => 'Illumina HiSeq',
         capture          => 'Agilent SureSelect'
     );

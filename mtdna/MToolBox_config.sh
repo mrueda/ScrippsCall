@@ -86,5 +86,5 @@ UseIndelRealigner=true
 #UseIndelRealigner=false
 ##
 ##OPTIONAL: specify if to exctract only mitochondrial reads from bam file provided as input. [false | true; DEFAULT is false]
-MitoExtraction=true
+MitoExtraction=false
 ##
