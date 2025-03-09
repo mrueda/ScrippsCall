@@ -125,7 +125,7 @@ my $rah_scrippscall = {                                              # Ref anony
     bash4_wes_single => $config->{bash4_wes_single}
 
 };
-say "$prompt Running ", uc( $param->{pipeline} ), ' pipeline...';
+say "$prompt Running ", uc( $config->{pipeline} ), ' pipeline...';
 
 my $wes = WES->new($rah_scrippscall);
 $wes->variant_calling();
