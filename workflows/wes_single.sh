@@ -2,7 +2,7 @@
 #
 #   STSI's Exome Pipeline Bash script.
 #   This pipeline works at the sample level. 
-#   For cohorts you will need to excute "exome_cohort.sh". This way, 
+#   For cohorts you will need to excute "wes_cohort.sh". This way, 
 #   if a new relative is added, you can easily add it a posteriori.
 #
 #   Last Modified; July/29/2016
@@ -162,7 +162,7 @@ do
       CREATE_INDEX=true 2>> $LOG
 done
 
-# Now we merge all BAM files x sample with Picard (samtools did not merge he headers)
+# Now we merge all BAM files x sample with Picard (samtools did not merge the headers)
 cd $BAMDIR
 echo "Merging all BAMs"
 # We append all inputs over the string tmp_in
