@@ -9,7 +9,7 @@ NGSUTILS=$DATADIR/NGSutils
 export TMPDIR=$DATADIR/tmp
 export LC_ALL=C
 
-MEM=4G
+MEM=8G
 ARCH=$(uname -m)  
 #JAVA=/usr/bin/java # Java 9
 #module load java/1.7.0_21
