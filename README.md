@@ -94,7 +94,7 @@ NB: In a Trio, the number of unique (de novo) variants for the proband should be
 ScrippsCall runs on a multi-core Linux desktop/workstation/server. It's deliberate to stay away from HPC ;-) 
 
       * Ideally a Ubuntu-like distribution (Linux Mint >= 13 recommended).
-      * 16GB of RAM.
+      * >= 8GB of RAM.
       * 4 cores (ideally i7 or Xeon).
       * At least 250GB HDD.
       * Perl > 5.10 and Term::ANSIColor and JSON::XS CPAN Modules
