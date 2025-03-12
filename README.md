@@ -108,7 +108,7 @@ ScrippsCall runs on a multi-core Linux desktop/workstation/server. It's delibera
       * Optional => SG-Adviser - At Scripps the annotation was performed with SG-Adviser L<https://genomics.scripps.edu/adviser>.
     
 
-The Perl itself does not need a lot of RAM (max load will reach 2% on 16GB), but the mapping and _samtools_ operations benefit from large amounts of RAM.
+The Perl script itself does not require much RAM (with a maximum load of 2% on a 16GB system), but mapping operations benefit from larger memory allocations. GATK and Picard have a default RAM allocation of 8GB, which users can modify as needed.
 
 The code is fully parallelized but doesn't scale linearly with `threads`. The sweet spot is 4 cores/threads. If you have 12 cores, running 3 jobs with 4 cores each may be better than one using all 12, though at the cost of slower I/O.
 

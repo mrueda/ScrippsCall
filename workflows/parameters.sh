@@ -8,6 +8,7 @@ NGSUTILS=$DATADIR/NGSutils
 # ENV
 export TMPDIR=$DATADIR/tmp
 export LC_ALL=C
+export GATK_DISABLE_TELEMETRY=true
 
 MEM=8G
 ARCH=$(uname -m)  
@@ -28,7 +29,7 @@ else
 fi
 
 PIC="$JAVA  -Xmx$MEM -Djava.io.tmpdir=$TMPDIR -jar $NGSUTILS/picard/build/libs/picard.jar"
-GATK="$JAVA -Xmx$MEM -Djava.io.tmpdir=$TMPDIR -Dgatk.report.telemetry=false -jar $NGSUTILS/gatk/3.5/GenomeAnalysisTK.jar"
+GATK="$JAVA -Xmx$MEM -Djava.io.tmpdir=$TMPDIR -jar $NGSUTILS/gatk/3.5/GenomeAnalysisTK.jar"
 MTOOLBOXDIR=$NGSUTILS/MToolBox-master/MToolBox
 
 # GATK bundle, human genome hg19

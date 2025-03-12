@@ -91,7 +91,6 @@ sub read_config_file {
 
         # Assignation to hash %config
         if ( $key eq 'sample' ) {
-            $config{output} = $value;
             $config{$key} = abs_path($value);
         }
         else { $config{$key} = $value; }
@@ -108,7 +107,7 @@ sub read_config_file {
       . $config{mode} . '_'
       . $config{id};    # User will make symbolic link to final folder
     my @tmp = split /\//, $config{sample};
-    $config{output}   = $tmp[-1];
+    $config{output_basename}   = $tmp[-1];
     $config{hostname} = hostname;
     $config{user}     = $user;
     chomp( my $threadshost = qx{/usr/bin/nproc} ) // 1;
