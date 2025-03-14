@@ -181,9 +181,9 @@ ScrippsCall is a framework for the analysis, annotation, filtering and reporting
 
  
     git clone https://github.com/mrueda/ScrippsCall.git
+    cd ScrippsCall
     sudo apt-get install cpanminus # Note we use sudo
     cpanm --notest --installdeps .
-
 
 =head1 HOW TO RUN SCRIPPSCALL
 
@@ -206,14 +206,12 @@ Pleave a blank space(s) or tab between the parameter and the value.
 
 Essential parameters
 
-
     * mode		single	 
     * pipeline		wes             
     * sample       	undef		 
 
 
 Optional parameters 
-
 
     * capture               Agilent SureSelect  # Not used
     * genome                hg19                # Not used
@@ -223,7 +221,6 @@ Optional parameters
 ScrippsCall will create an independent project directory (scrippscall_*) and store all information needed there. Thus, many concurrent calculations are supported.
 
 Note that ScrippsCall will not modify your original files.
-
 
 Please find below a detailed description of the important parameters:
 
@@ -245,7 +242,6 @@ The path (relative path is fine) to the directory where the fastq files for the 
 
 B<Examples:>
 
-
    $ bin/scrippscall -i config_file -t 8
 
    $ bin/scrippscall -i config_file -t 4 -verbose
@@ -257,11 +253,9 @@ B<Examples:>
 
 NB: In a Trio, the number of unique (de novo) variants for the proband should be ~ 1% and for the F, M ~ 10%. Deviations from this are suspicious.
 
-
 =head1 SYSTEM REQUIREMENTS
 
 ScrippsCall runs on a multi-core Linux desktop/workstation/server. It's deliberate to stay away from HPC ;-) 
-
 
     * Ideally a Ubuntu-like distribution (Linux Mint >= 13 recommended).
     * >= 8GB of RAM.

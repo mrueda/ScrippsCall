@@ -28,6 +28,7 @@ ScrippsCall is a framework for the analysis, annotation, filtering and reporting
 # INSTALLATION
 
     git clone https://github.com/mrueda/ScrippsCall.git
+    cd ScrippsCall
     sudo apt-get install cpanminus # Note we use sudo
     cpanm --notest --installdeps .
 
