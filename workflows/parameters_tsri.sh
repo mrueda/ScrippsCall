@@ -17,14 +17,14 @@ GATK="$JAVA -Xmx$MEM -Djava.io.tmpdir=$TMPDIR -jar $NGSUTILS/gatk/3.5/GenomeAnal
 #module load java/1.7.0_21
 
 # GATK bundle, human genome hg19
-bundle=$DBDIR/genomes/GATK_bundle/hg19
-REF=$bundle/ucsc.hg19.fasta
-REFGZ=$bundle/ucsc.hg19.fasta.gz
-dbSNP=$bundle/dbsnp_137.hg19.vcf
-MILLS_INDELS=$bundle/Mills_and_1000G_gold_standard.indels.hg19.vcf
-KG_INDELS=$bundle/1000G_phase1.indels.hg19.vcf
-HAPMAP=$bundle/hapmap_3.3.hg19.vcf
-OMNI=$bundle/1000G_omni2.5.hg19.vcf
+BUNDLE=$DBDIR/genomes/GATK_bundle/hg19
+REF=$BUNDLE/ucsc.hg19.fasta
+REFGZ=$BUNDLE/ucsc.hg19.fasta.gz
+dbSNP=$BUNDLE/dbsnp_137.hg19.vcf
+MILLS_INDELS=$BUNDLE/Mills_and_1000G_gold_standard.indels.hg19.vcf
+KG_INDELS=$BUNDLE/1000G_phase1.indels.hg19.vcf
+HAPMAP=$BUNDLE/hapmap_3.3.hg19.vcf
+OMNI=$BUNDLE/1000G_omni2.5.hg19.vcf
 
 # training sets for variant recalibration
 SNP_RES="-resource:hapmap,known=false,training=true,truth=true,prior=15.0 $HAPMAP \

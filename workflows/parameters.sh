@@ -33,14 +33,14 @@ GATK="$JAVA -Xmx$MEM -Djava.io.tmpdir=$TMPDIR -jar $NGSUTILS/gatk/3.5/GenomeAnal
 MTOOLBOXDIR=$NGSUTILS/MToolBox-master/MToolBox
 
 # GATK bundle, human genome hg19
-bundle=$DBDIR/GATK_bundle/b37
-REF=$bundle/references_b37_Homo_sapiens_assembly19.fasta
-REFGZ=$bundle/references_b37_Homo_sapiens_assembly19.fasta.gz
+BUNDLE=$DBDIR/GATK_bundle/b37
+REF=$BUNDLE/references_b37_Homo_sapiens_assembly19.fasta
+REFGZ=$BUNDLE/references_b37_Homo_sapiens_assembly19.fasta.gz
 dbSNP=$DBDIR/dbSNP/human_9606_b144_GRCh37p13/All_20160408.vcf.gz
-MILLS_INDELS=$bundle/b37_Mills_and_1000G_gold_standard.indels.b37.vcf.gz
-KG_INDELS=$bundle/b37_1000G_phase1.indels.b37.vcf.gz
-HAPMAP=$bundle/b37_hapmap_3.3.b37.vcf.gz
-OMNI=$bundle/b37_1000G_omni2.5.b37.vcf.gz
+MILLS_INDELS=$BUNDLE/b37_Mills_and_1000G_gold_standard.indels.b37.vcf.gz
+KG_INDELS=$BUNDLE/b37_1000G_phase1.indels.b37.vcf.gz
+HAPMAP=$BUNDLE/b37_hapmap_3.3.b37.vcf.gz
+OMNI=$BUNDLE/b37_1000G_omni2.5.b37.vcf.gz
 
 # training sets for variant recalibration
 SNP_RES="-resource:hapmap,known=false,training=true,truth=true,prior=15.0 $HAPMAP \
